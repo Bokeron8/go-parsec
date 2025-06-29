@@ -34,13 +34,19 @@ func main() {
 	cmd := exec.Command("ffmpeg",
     "-f", "x11grab",                 // Linux
     "-video_size", "1366x768",
+    "-framerate", "60",
     "-i", ":0.0",                    // pantalla 0
     "-f", "mpegts",
     "-codec:v", "libx264",
     "-preset", "ultrafast",
     "-tune", "zerolatency",
+    "-threads", "1",
+    "-g", "30",
+    "-sc_threshold", "0",
+    "-bf", "0",
+    "-flags", "low_delay",
+    "-crf", "40",
     "-")
-
     stdout, _ := cmd.StdoutPipe()
     if err := cmd.Start(); err != nil {
         log.Fatal(err)

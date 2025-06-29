@@ -42,8 +42,13 @@ func handleConn(conn quic.Connection) {
 
 		go func(s quic.Stream) {
 			defer s.Close()
+            //ffplay -fflags nobuffer -flags low_delay -strict experimental -i -
 
-			cmd := exec.Command("ffplay", "-i", "-")
+			cmd := exec.Command("ffplay", "-fflags", 
+                                "nobuffer", "-flags", 
+                                "low_delay", "-strict", 
+                                "experimental", 
+                                "-i", "-")
             stdin, _ := cmd.StdinPipe()
             if err := cmd.Start(); err != nil {
                 log.Fatal(err)
