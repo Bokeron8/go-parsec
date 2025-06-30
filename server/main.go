@@ -13,7 +13,7 @@ import (
 
 func main() {
 	// quic-server-init-start
-	listener, err := quic.ListenAddr("localhost:4242", generateTLSConfig(), nil)
+	listener, err := quic.ListenAddr("192.168.0.41:4242", generateTLSConfig(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -44,7 +44,12 @@ func handleConn(conn quic.Connection) {
 			defer s.Close()
             //ffplay -fflags nobuffer -flags low_delay -strict experimental -i -
 
-			cmd := exec.Command("ffmpeg", "-i", "-", "-f", "null", "-")
+			cmd := exec.Command("ffmpeg",
+            "-fflags", "nobuffer",
+            "-flags", "low_delay",
+            "-i", "-",
+            "-f", "sdl", "Video")
+
 
             stdin, _ := cmd.StdinPipe()
             if err := cmd.Start(); err != nil {
