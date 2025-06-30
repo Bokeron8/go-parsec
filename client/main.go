@@ -20,7 +20,7 @@ func generateTLSConfig() *tls.Config {
 
 func main() {
 
-    session, err := quic.DialAddr(context.Background(), "localhost:4242", generateTLSConfig(), nil)
+    session, err := quic.DialAddr(context.Background(), "192.168.0.41:4242", generateTLSConfig(), nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -34,8 +34,9 @@ func main() {
 	cmd := exec.Command("ffmpeg",
     "-f", "x11grab",                 // Linux
     "-video_size", "1366x768",
-    "-framerate", "60",
+    "-framerate", "30",
     "-i", ":0.0",                    // pantalla 0
+    "-vf", "scale=800:600",
     "-f", "mpegts",
     "-codec:v", "libx264",
     "-preset", "ultrafast",
@@ -45,7 +46,7 @@ func main() {
     "-sc_threshold", "0",
     "-bf", "0",
     "-flags", "low_delay",
-    "-crf", "40",
+    "-crf", "30",
     "-")
     stdout, _ := cmd.StdoutPipe()
     if err := cmd.Start(); err != nil {
